@@ -111,7 +111,7 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
 
     // TODO: Implement your solution here.
   	// Repeat as long as we are not at the starting point
-	while(current_node->parent != nullptr && current_node->parent != end_node){
+	while(current_node->parent != nullptr && current_node->parent != nullptr){
       
     	path_found.emplace_back(*current_node);
       	const RouteModel::Node parent = *(current_node->parent);
@@ -124,7 +124,9 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
   	
   	path_found.emplace_back(*current_node);
     distance *= m_Model.MetricScale(); // Multiply the distance by the scale of the map to get meters.
-  	
+  	// the returned vector should be in the correct order. the start node should be the first element  	
+  	//of the vector, the end node should be the last element.
+  	std::reverse(path_found.begin(), path_found.end()); 
     return path_found;
 
 }
