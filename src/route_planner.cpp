@@ -40,10 +40,10 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
   current_node->FindNeighbors();
   
   // find all connected (non-visited) nodes
-  std::vector<RouteModel::Node *> neighbors_local = current_node->neighbors;
+//   std::vector<RouteModel::Node *> neighbors_local = current_node->neighbors;
   
   // update found neighbors
-  for(auto neighbor : neighbors_local){
+  for(auto neighbor : current_node->neighbors){
   	
     // link node to parent
     neighbor->parent = current_node;
@@ -81,13 +81,13 @@ RouteModel::Node *RoutePlanner::NextNode() {
   // sort the vector of nodes write a lambda for the compare argument
   std::sort(open_list.begin(), open_list.end(), [](const auto &_1st, const auto &_2nd){
   
-  return _1st -> h_value + _1st -> g_value < _2nd -> h_value + _2nd -> g_value;
+  return (_1st -> h_value + _1st -> g_value) < (_2nd -> h_value + _2nd -> g_value);
   
   });
   
   // get the smallest F value node, and pop-it from list
-  RouteModel::Node *result = open_list.back();
-  open_list.pop_back();
+  RouteModel::Node *result = open_list.front();
+  open_list.erase(open_list.begin());
   
   //return the pointer
   return result;
